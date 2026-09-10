@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react'
 import { getCollection } from '../api.js'
 
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim()
+const activitiesEndpoint = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev/api/activities/`
+  : 'http://localhost:8000/api/activities/'
+
 function Activities() {
   const [activities, setActivities] = useState([])
   const [error, setError] = useState('')
 
   useEffect(() => {
-    getCollection('activities').then(setActivities).catch((loadError) => setError(loadError.message))
+    getCollection(activitiesEndpoint).then(setActivities).catch((loadError) => setError(loadError.message))
   }, [])
 
   return (
